@@ -1,7 +1,8 @@
-package com.diegoalvis.android.newsapp
+package com.diegoalvis.android.newsapp.ui
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import com.diegoalvis.android.newsapp.R
 
 class MainActivity : AppCompatActivity() {
 
