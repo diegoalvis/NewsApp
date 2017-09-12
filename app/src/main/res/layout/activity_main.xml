@@ -4,10 +4,8 @@
 
     <data>
         <import type="android.view.View"/>
-
         <variable
             name="isLoading" type="boolean" />
-
     </data>
 
     <FrameLayout
