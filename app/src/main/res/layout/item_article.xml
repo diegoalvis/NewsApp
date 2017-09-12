@@ -4,12 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
-            name="article"
-            type="com.diegoalvis.android.newsapp.models.Article" />
-        <variable
-            name="selected"
-            type="io.reactivex.subjects.PublishSubject"/>
+            name="articleViewModel"
+            type="com.diegoalvis.android.newsapp.viewmodels.ArticleViewModel" />
 
     </data>
 
@@ -20,9 +18,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        app:cardCornerRadius="8dp"
-        android:onClick="@{()->selected.onNext(article)}"
-        >
+        app:cardCornerRadius="8dp">
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
@@ -35,15 +31,13 @@
                 android:layout_marginTop="12dp"
                 android:layout_marginBottom="32dp"
                 android:background="@color/cardview_dark_background"
-                android:scaleType="centerCrop"
-                app:imgUrl="@{article.multimedia[2].url}"
-                />
+                android:scaleType="fitXY" />
 
             <TextView
                 android:id="@+id/articleTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{article.title}"
+                android:text="@{articleViewModel.article.title}"
                 android:layout_marginStart="5dp"
                 android:layout_marginEnd="5dp"
                 android:textSize="12sp"
@@ -60,7 +54,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
                 android:layout_marginEnd="5dp"
-                android:text="@{article.section}"
+                android:text="@{articleViewModel.article.section}"
                 android:textSize="11sp"
                 android:textStyle="italic"
                 android:ellipsize="end"

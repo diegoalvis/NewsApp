@@ -1,7 +1,9 @@
 package com.diegoalvis.android.newsapp.api
 
 import com.diegoalvis.android.newsapp.models.Article
+import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
+
 
 class NewsResponse {
 
@@ -12,6 +14,6 @@ class NewsResponse {
     var numResults: Int? = null
 
     @SerializedName("results")
-    val newsList: List<Article> = ArrayList()
+    val newsList: List<Article> = ArrayList<Article>()
 
 }
