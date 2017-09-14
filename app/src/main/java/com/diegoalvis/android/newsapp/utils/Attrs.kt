@@ -9,8 +9,10 @@ object Attrs{
     @BindingAdapter("app:imgUrl")
     @JvmStatic
     fun loadImage(imageView: ImageView, url: String?) {
-        Picasso.with(imageView.context)
-                .load(Uri.parse(url))
-                .into(imageView)
+        if (!url.isNullOrEmpty()) {
+            Picasso.with(imageView.context)
+                    .load(Uri.parse(url))
+                    .into(imageView)
+        }
     }
 }

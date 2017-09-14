@@ -1,15 +1,14 @@
 package com.diegoalvis.android.newsapp.ui.main
 
 import android.databinding.DataBindingUtil
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.support.v7.widget.GridLayoutManager
+import android.support.v7.app.AppCompatActivity
 import android.widget.Toast
-
 import com.diegoalvis.android.newsapp.R
 import com.diegoalvis.android.newsapp.databinding.ActivityMainBinding
 import com.diegoalvis.android.newsapp.models.Article
 import com.diegoalvis.android.newsapp.ui.adapters.ArticlesAdapter
+import com.diegoalvis.android.newsapp.ui.adapters.SectionAdapter
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.subscribeBy
 import kotlinx.android.synthetic.main.activity_main.*
@@ -17,26 +16,31 @@ import kotlinx.android.synthetic.main.activity_main.*
 class MainActivity : AppCompatActivity() {
 
     private val viewModel: MainViewModel by lazy { MainViewModel(this) }
+    private val sectionAdapter: SectionAdapter by lazy { SectionAdapter(resources.getStringArray(R.array.sections)) }
     private val articlesAdapter: ArticlesAdapter = ArticlesAdapter()
-    private lateinit var binding: ActivityMainBinding
+
     private val subscriptions = CompositeDisposable()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-        setRecyclerView()
+        var binding: ActivityMainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+        binding.viewModel = viewModel
+
+        recyclerArticle.adapter = articlesAdapter
+        recyclerSection.adapter = sectionAdapter
+
+        setSubscriptions()
     }
 
-    private fun setRecyclerView() {
-        recyclerView.adapter = articlesAdapter
-        recyclerView.layoutManager = GridLayoutManager(this, 2, GridLayoutManager.VERTICAL, false)
-        subscriptions.add(articlesAdapter.articleSelected()
-                .subscribe(this::itemSelected))
+    private fun setSubscriptions() {
+        subscriptions.addAll(
+                    articlesAdapter.articleSelected().subscribe(this::itemSelected),
+                    sectionAdapter.sectionSelected().subscribe(this::sectionSelected)
+        )
     }
 
     override fun onResume() {
         super.onResume()
-        loadData()
     }
 
     override fun onDestroy() {
@@ -44,12 +48,16 @@ class MainActivity : AppCompatActivity() {
         subscriptions.dispose()
     }
 
-    fun itemSelected(article: Article) {}
+    fun sectionSelected(section: String) {
+        loadData(section)
+    }
 
-    private fun loadData() {
-        binding.isLoading = true
-        subscriptions.add(viewModel.getArticles()
-                .doOnTerminate{ binding.isLoading = false }
+    fun itemSelected(article: Article) {
+        Toast.makeText(this, article.title.plus(" selected"), Toast.LENGTH_SHORT).show()
+    }
+
+    private fun loadData(section: String) {
+        subscriptions.add(viewModel.getArticles(section)
                 .subscribeBy(
                         onNext = { articlesAdapter.items = it },
                         onError = {
