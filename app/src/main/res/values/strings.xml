@@ -3,13 +3,16 @@
 
     <string name="API_KEY">1b6da39e66b2459298eb245930bd9180</string>
 
-    <string name="home">home</string>
-    <string name="world">world</string>
-    <string name="technology">technology</string>
-    <string name="science">science</string>
-    <string name="sports">sports</string>
-    <string name="movies">movies</string>
-    <string name="food">food</string>
-    <string name="travel">travle</string>
+    <string-array name="sections">
+        <item name="home">home</item>
+        <item name="world">world</item>
+        <item name="technology">technology</item>
+        <item name="science">science</item>
+        <item name="sports">sports</item>
+        <item name="movies">movies</item>
+        <item name="food">food</item>
+        <item name="travel">travle</item>
+    </string-array>
+
 </resources>
 

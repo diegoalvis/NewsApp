@@ -1,17 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-        <import type="android.view.View"/>
+
+        <import type="android.view.View" />
+
         <variable
-            name="isLoading" type="boolean" />
+            name="viewModel"
+            type="com.diegoalvis.android.newsapp.ui.main.MainViewModel" />
     </data>
 
     <FrameLayout
-        android:background="@color/cardview_dark_background"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@android:color/darker_gray">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recyclerSection"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clipToPadding="true"
+                android:scrollbarStyle="outsideInset"
+                android:scrollbars="horizontal"
+                android:orientation="horizontal"
+                app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+                tools:itemCount="5"
+                tools:listitem="@layout/item_section"
+                tools:visibility="visible" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recyclerArticle"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clipToPadding="true"
+                android:scrollbarStyle="outsideOverlay"
+                android:scrollbars="vertical"
+                android:visibility="@{!viewModel.isLoading ? View.VISIBLE : View.GONE}"
+                app:layoutManager="android.support.v7.widget.GridLayoutManager"
+                app:spanCount="2"
+                tools:itemCount="5"
+                tools:listitem="@layout/item_article"
+                tools:visibility="visible" />
+
+        </LinearLayout>
 
         <ProgressBar
             android:id="@android:id/empty"
@@ -21,17 +59,8 @@
             android:indeterminate="true"
             android:indeterminateTint="?android:colorAccent"
             android:indeterminateTintMode="src_in"
-            android:visibility="@{isLoading ? View.VISIBLE : View.GONE}" />
+            android:visibility="@{viewModel.isLoading ? View.VISIBLE : View.GONE}" />
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:clipToPadding="true"
-            android:scrollbarStyle="outsideOverlay"
-            android:scrollbars="vertical"
-            android:visibility="@{!isLoading ? View.VISIBLE : View.GONE}"
-            app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
 
     </FrameLayout>
 
